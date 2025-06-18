@@ -80,7 +80,14 @@ local function open_project_note()
 			if vim.api.nvim_get_option_value("modified", { buf = buf }) then
 				vim.notify("Buffer has unsaved changes. Please save before closing.", vim.log.levels.WARN)
 			else
-				vim.api.nvim_win_close(0, true)
+				-- Close the window if it is valid
+				if vim.api.nvim_win_is_valid(window) then
+					vim.api.nvim_win_close(window, true)
+				end
+				-- Quickly delete the buffer
+				if vim.api.nvim_buf_is_valid(buf) then
+					vim.api.nvim_buf_delete(buf, { force = false })
+				end
 			end
 		end,
 	})
@@ -113,7 +120,14 @@ local function open_floating_file(target_file)
 			if vim.api.nvim_get_option_value("modified", { buf = buf }) then
 				vim.notify("Buffer has unsaved changes. Please save before closing.", vim.log.levels.WARN)
 			else
-				vim.api.nvim_win_close(0, true)
+				-- Close the window if it is valid
+				if vim.api.nvim_win_is_valid(window) then
+					vim.api.nvim_win_close(window, true)
+				end
+				-- Quickly delete the buffer
+				if vim.api.nvim_buf_is_valid(buf) then
+					vim.api.nvim_buf_delete(buf, { force = false })
+				end
 			end
 		end,
 	})
